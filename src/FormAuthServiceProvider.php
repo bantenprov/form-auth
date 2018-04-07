@@ -135,8 +135,8 @@ class FormAuthServiceProvider extends ServiceProvider
         $packageAssetsPath = __DIR__.'/resources/assets';
 
         $this->publishes([
-            $packageAssetsPath => public_path('vendor/form-auth'),
-        ], 'public');
+            $packageAssetsPath => resource_path('assets'),
+        ], 'form-aut-assets');
     }
 
     /**

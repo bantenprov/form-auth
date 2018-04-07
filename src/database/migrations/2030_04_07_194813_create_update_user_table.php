@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFormAuthTable extends Migration
+class CreateUpdateUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateFormAuthTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_auth', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('email')->nullable()->change();            
         });
     }
 
@@ -26,6 +25,8 @@ class CreateFormAuthTable extends Migration
      */
     public function down()
     {
-        Schema::drop('form_auth');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('email');            
+        });
     }
 }
