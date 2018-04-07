@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 
+use File;
 /**
  * The FormAuthCommand class.
  *
@@ -16,7 +17,7 @@ class FormAuthCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'bantenprov:form-auth';
+    protected $signature = 'form-auth:setup';
 
     /**
      * The console command description.
@@ -24,6 +25,9 @@ class FormAuthCommand extends Command
      * @var string
      */
     protected $description = 'Demo command for Bantenprov\FormAuth package';
+
+
+    protected $files;
 
     /**
      * Create a new command instance.
@@ -33,6 +37,25 @@ class FormAuthCommand extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->files = (Object) [
+            'api' => [
+                'stub' => 'api.stub',
+                'file_put_location' => base_path().'/routes/api.php'
+            ],
+            'LoginController' => [
+                'stub' => 'LoginController.stub',
+                'file_put_location' => app_path().'/Http/Controllers/Auth/LoginController.php'
+            ],
+            'ProfileController' => [
+                'stub' => 'ProfileController.stub',
+                'file_put_location' => app_path().'/Http/Controllers/Settings/ProfileController.php'
+            ],
+            'RegisterController' => [
+                'stub' => 'RegisterController.stub',
+                'file_put_location' => app_path().'/Http/Controllers/Auth/RegisterController.php'
+            ],
+        ];
     }
 
     /**
@@ -41,7 +64,33 @@ class FormAuthCommand extends Command
      * @return mixed
      */
     public function handle()
+    {           
+
+        $this->putFileContent($this->files->api['file_put_location'], $this->getStubFileContent($this->files->api['stub']));
+
+        $this->info('change file content api.php success');
+
+        $this->putFileContent($this->files->LoginController['file_put_location'], $this->getStubFileContent($this->files->LoginController['stub']));
+
+        $this->info('change file content LoginController.php success');
+
+        $this->putFileContent($this->files->ProfileController['file_put_location'], $this->getStubFileContent($this->files->ProfileController['stub']));
+
+        $this->info('change file content ProfileController.php success');
+
+        $this->putFileContent($this->files->RegisterController['file_put_location'], $this->getStubFileContent($this->files->RegisterController['stub']));
+
+        $this->info('change file content RegisterController.php success');
+        
+    }
+
+    public function getStubFileContent($file_name)
     {
-        $this->info('Welcome to command for Bantenprov\FormAuth package');
+        return File::get(__DIR__.'/../../stubs/'.$file_name);
+    }
+
+    public function putFileContent($path, $content)
+    {
+        return File::put($path, $content);
     }
 }
