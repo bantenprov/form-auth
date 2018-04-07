@@ -24,7 +24,7 @@ class FormAuthCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Demo command for Bantenprov\FormAuth package';
+    protected $description = 'Command to setup form-auth package';
 
 
     protected $files;
