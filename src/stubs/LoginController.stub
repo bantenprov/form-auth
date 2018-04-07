@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
+class LoginController extends Controller
+{
+    use AuthenticatesUsers;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $token = $this->guard()->attempt($this->credentials($request));
+
+        if ($token) {
+            $this->guard()->setToken($token);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $this->clearLoginAttempts($request);
+
+        $token = (string) $this->guard()->getToken();
+        $expiration = $this->guard()->getPayload()->get('exp');
+        
+        /* default redirect */
+        $redirect = 'dashboard';
+
+        /* Count from table siswas if nomor_un > 1 or exist */
+        /*                         
+            $nomor_un = $request->user()->siswa->nomor_un;
+            $siswa = Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa::where('nomor_un',$nomor_un)->count();
+        */
+
+        /*  Example  */
+        $siswa = 1;
+
+        
+        /* Check if nomor_un exist */
+        if($siswa > 0){
+            $redirect = 'pendaftaran-wizard';
+        }else{
+            $redirect = 'dashboard';
+        }
+
+        return [
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $expiration - time(),
+            'redirect'   => $redirect
+        ];
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'name';
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+    }
+}
