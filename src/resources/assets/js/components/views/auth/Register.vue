@@ -97,6 +97,9 @@ export default {
       // Update the user.
       await this.$store.dispatch('updateUser', { user: data })
 
+      // Fetch the user
+      await this.$store.dispatch('fetchUser', { user: data })
+
       // Redirect home.      
       this.$router.push({ name: data.redirect })
     }

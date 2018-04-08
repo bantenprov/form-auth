@@ -44,13 +44,13 @@ class RegisterController extends Controller
     {
         if($data['email'] != ""){
             return Validator::make($data, [
-                'name' => 'required|max:255',
+                'name' => 'required|min:6|integer|unique:users,name',
                 'email' => 'email|max:255|unique:users',
                 'password' => 'required|min:6|confirmed',
             ]);
         }else{
             return Validator::make($data, [
-                'name' => 'required|max:255',
+                'name' => 'required|min:6|integer|unique:users,name',
                 'password' => 'required|min:6|confirmed',
             ]);
         }
@@ -65,10 +65,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        return $user->attachRole(env('DEFAULT_USER_ROLE'));
     }
 }

@@ -19,11 +19,11 @@ class ProfileController extends Controller
 
         if($request->email == ""){
             $this->validate($request, [
-                'name' => 'required'                
+                'name' => 'required|unique:users,name,'.$user->id                
             ]);
         }else{
             $this->validate($request, [
-                'name' => 'required',
+                'name' => 'required|unique:users,name,'.$user->id,
                 'email' => 'email|unique:users,email,'.$user->id,
             ]);
         }
