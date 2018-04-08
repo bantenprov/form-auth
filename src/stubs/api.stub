@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         
         /* Check if nomor_un exist */
         if($request->user()->hasRole(env('DEFAULT_USER_ROLE'))){
-            $redirect = 'admin.pendaftaran-wizard';
+            $redirect = 'pendaftaran-wizard';
             $who = 'siswa';
             if($siswa->count() > 0){
                 $nilai = Bantenprov\Nilai\Models\Bantenprov\Nilai\Nilai::where('siswa_id',$siswa->first()->id);

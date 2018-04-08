@@ -57,6 +57,6 @@ $ php artisan form-auth:setup
      */
     public function getRedirectAttribute()
     {
-        return 'admin.pendaftaran-wizard';
+        return 'pendaftaran-wizard';
     }
 ```

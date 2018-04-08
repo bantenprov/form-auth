@@ -67,7 +67,7 @@ class LoginController extends Controller
         
         /* Check if nomor_un exist */
         if($siswa > 0){
-            $redirect = 'admin.pendaftaran-wizard';
+            $redirect = 'pendaftaran-wizard';
             $who = 'siswa';
         }else{
             $redirect = 'dashboard';
