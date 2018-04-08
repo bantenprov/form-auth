@@ -60,3 +60,22 @@ $ php artisan form-auth:setup
         return 'pendaftaran-wizard';
     }
 ```
+
+### edit `.evn`
+
+```php
+
+DEFAULT_USER_ROLE=siswa
+
+```
+
+### add new role 
+
+### Vue trust > Role > [+]
+```
++-------+--------------+
+|  name | display name |
++-------+--------------+
+| siswa |     Siswa    |
++-------+--------------+
+```
