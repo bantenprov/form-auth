@@ -11,7 +11,7 @@
 
         <!-- Name -->
         <div class="form-group">
-          <label for="inputName">Nomor UN</label>
+          <label for="inputName">{{label}}</label>
           <input v-model="form.name" type="text" name="name" disabled class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" id="inputName" autofocus>
           <has-error :form="form" field="name"/>
         </div><!-- /.form-group -->
@@ -44,7 +44,8 @@ export default {
     form: new Form({
       name: '',
       email: ''
-    })
+    }),
+    label:'Nomor UN'
   }),
 
   computed: mapGetters({
@@ -54,16 +55,22 @@ export default {
 
   created () {
     // Fill the form with user data.
-    this.form.keys().forEach(key => {
-      this.form[key] = this.user[key]
+    this.form.keys().forEach(key => {      
+      this.form[key] = this.user.user[key]       
+      if(this.user.who == 'non-siswa'){
+        this.label = 'Username'
+      }else if(this.user.who == 'siswa'){
+        this.label = 'Nomor UN'
+      }
     })
+    
   },
 
   methods: {
     async update () {
       const { data } = await this.form.patch('/api/settings/profile')
 
-      this.$store.dispatch('updateUser', { user: data })
+      this.$store.dispatch('updateUser', { user: data })      
     }
   }
 }

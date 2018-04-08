@@ -56,27 +56,30 @@ class LoginController extends Controller
         $redirect = 'dashboard';
 
         /* Count from table siswas if nomor_un > 1 or exist */
-        /*                         
-            $nomor_un = $request->user()->siswa->nomor_un;
-            $siswa = Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa::where('nomor_un',$nomor_un)->count();
-        */
+                                
+            $nomor_un = $request->user()->name;
+            $siswa = \Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa::where('nomor_un',$nomor_un)->count();
+       
 
         /*  Example  */
-        $siswa = 1;
+        // $siswa = 1;
 
         
         /* Check if nomor_un exist */
         if($siswa > 0){
-            $redirect = 'pendaftaran-wizard';
+            $redirect = 'admin.pendaftaran-wizard';
+            $who = 'siswa';
         }else{
             $redirect = 'dashboard';
+            $who = 'non-siswa';
         }
 
         return [
             'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $expiration - time(),
-            'redirect'   => $redirect
+            'redirect'   => $redirect,
+            'who'        => $who
         ];
     }
 
