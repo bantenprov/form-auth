@@ -23,7 +23,7 @@ $ composer require bantenprov/form-auth:dev-master
 
 ```bash
 
-$ php artisan vendor:publish --tag=form-auth-assets && php artisan migrate
+$ php artisan vendor:publish --tag=form-auth-assets --force && php artisan migrate
 
 ```
 
