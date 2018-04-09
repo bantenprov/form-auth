@@ -51,23 +51,23 @@ class LoginController extends Controller
 
         $token = (string) $this->guard()->getToken();
         $expiration = $this->guard()->getPayload()->get('exp');
-        
+
         /* default redirect */
         $redirect = 'dashboard';
 
         /* Count from table siswas if nomor_un > 1 or exist */
-                                
+
             $nomor_un = $request->user()->name;
             $siswa = \Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa::where('nomor_un',$nomor_un)->count();
-       
+
 
         /*  Example  */
         // $siswa = 1;
 
-        
+
         /* Check if nomor_un exist */
         if($siswa > 0){
-            $redirect = 'pendaftaran-wizard';
+            $redirect = 'siswa.pendaftaran-wizard';
             $who = 'siswa';
         }else{
             $redirect = 'dashboard';

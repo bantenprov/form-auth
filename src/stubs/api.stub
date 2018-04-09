@@ -16,28 +16,28 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 
-    Route::get('/user', function (Request $request) {    
+    Route::get('/user', function (Request $request) {
         /* default redirect */
-        $redirect = 'dashboard';   
-        
+        $redirect = 'dashboard';
+
         /* nilai */
         $akademik = '-';
         $prestasi = '-';
         $zona     = '-';
         $sktm     = '-';
         /* Count from table siswas if nomor_un > 1 or exist */
-                                
+
             $nomor_un = $request->user()->name;
             $siswa = Bantenprov\Siswa\Models\Bantenprov\Siswa\Siswa::where('nomor_un',$nomor_un);
-       
+
 
         /*  Example  */
         // $siswa = 0;
 
-        
+
         /* Check if nomor_un exist */
         if($request->user()->hasRole(env('DEFAULT_USER_ROLE'))){
-            $redirect = 'pendaftaran-wizard';
+            $redirect = 'siswa.pendaftaran-wizard';
             $who = 'siswa';
             if($siswa->count() > 0){
                 $nilai = Bantenprov\Nilai\Models\Bantenprov\Nilai\Nilai::where('siswa_id',$siswa->first()->id);
@@ -48,12 +48,12 @@ Route::group(['middleware' => 'auth:api'], function () {
                     $sktm     = $nilai->first()->sktm;
                 }
             }
-            
+
         }else{
             $redirect = 'dashboard';
             $who = 'non-siswa';
         }
-        
+
 
         $response['user'] = $request->user();
         $response['who'] = $who;
