@@ -62,6 +62,7 @@
 
 <script>
 import Checkbox from './checkbox';
+import swal from 'sweetalert2';
 
 export default {
   components: {
@@ -80,7 +81,17 @@ export default {
     async login () {
       // Submit the form.
       const { data } = await this.form.post('/api/login')
-      
+
+      if(data.error === true){
+        swal(
+          'Error',
+          data.message,
+          'error'
+        );
+
+        return false;
+      }
+
       // Save the token.
       this.$store.dispatch('saveToken', {
         token: data.token,
@@ -93,7 +104,7 @@ export default {
       }
 
       // Redirect dashboard.
-      if(data != null) {        
+      if(data != null) {
         this.$router.push({ name: data.redirect })
       }
     }
